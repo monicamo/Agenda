@@ -45,3 +45,10 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+*.classpath
+.metadata
+.project
+.settings
+.gitignore
+ProjectClick
+target
