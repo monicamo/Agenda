@@ -11,6 +11,7 @@ import org.apache.click.control.Decorator;
 import org.apache.click.control.PageLink;
 import org.apache.click.control.Table;
 import org.apache.click.dataprovider.DataProvider;
+import org.apache.click.dataprovider.PagingDataProvider;
 import org.apache.click.extras.control.LinkDecorator;
 import org.apache.click.util.Bindable;
 
@@ -41,10 +42,17 @@ public class ListaTarefas extends BorderPage {
 	@Bindable
 	private ActionLink deleteLink = new ActionLink("delete", "Excluir", this, "excluir");
 
-	public ListaTarefas() {
+	
+	/**
+	 * 
+	 * NAO USADO
+	 * 
+	 * 
+	 */
+	public void listaTarefas() {
 		setStateful(true);
 		
-		Table tarefas =  new Table("tarefas");
+		final Table tarefas =  new Table("tarefas");
 		
 		tarefas.setClass(Table.CLASS_ORANGE1);
 		tarefas.setSortedColumn("data");
@@ -61,10 +69,19 @@ public class ListaTarefas extends BorderPage {
 		Column action = new Column("action", "Ações");
 		tarefas.addColumn(action);
 		
-		tarefas.setDataProvider(new DataProvider<Tarefa>() {
+		tarefas.setDataProvider(new 
+			PagingDataProvider<Tarefa>() {
 			public List<Tarefa> getData() {
-				List<Tarefa> tarefas = service.getTarefas();
+				int inicio = tarefas.getFirstRow();
+				int qtde = tarefas.getPageNumber();
+				
+				List<Tarefa> tarefas = service.getTarefas(inicio, qtde);
 				return tarefas;
+			}
+
+			@Override
+			public int size() {
+				return service.countTarefas();
 			}
 		});
 		
